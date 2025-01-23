@@ -1,0 +1,26 @@
+server:
+  port: ${PORT}
+
+spring:
+  application:
+    name: ${SPRING_APP_NAME}
+  config:
+    import: optional:configserver:http://localhost:8190
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-repository: false
+    service-uri:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+logging:
+  level:
+    com:
+      netflix:
+        eureka: OFF
+        discovery: OFF
+
+

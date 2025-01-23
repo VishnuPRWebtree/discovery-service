@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  discovery-service:
+    image: ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER:-latest}
+    container_name: ${CONTAINER_NAME}
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - demo-network
+#    depends_on:
+#      config-server:
+#        condition: service_healthy
+#    environment:
+#      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+networks:
+  demo-network:
+    driver: bridge
