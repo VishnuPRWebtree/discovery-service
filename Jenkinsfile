@@ -8,8 +8,8 @@ pipeline {
 
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
-        DOCKER_IMAGE_NAME = 'vishnuprv/docker-demo'
-        DOCKER_IMAGE_TAG = "${BUILD_NUMBER}"  // Using Jenkins BUILD_NUMBER
+        DOCKER_IMAGE_NAME = 'vishnuprv/discovery'
+        DOCKER_IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
