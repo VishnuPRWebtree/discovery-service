@@ -9,7 +9,7 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
         DOCKER_IMAGE_NAME = 'vishnuprv/discovery'
-        DOCKER_IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKER_IMAGE_TAG = "${BUILD_NUMBER:-latest}" // Default to "latest" if BUILD_NUMBER is not set
     }
 
     stages {
@@ -44,11 +44,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = BUILD_NUMBER ?: "latest" // Default tag if BUILD_NUMBER is missing
                     sh """
                        docker --version
-                       docker build --build-arg BUILD_NUMBER=${IMAGE_TAG} \
-                       -t ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} .
+                       docker build --build-arg BUILD_NUMBER=${DOCKER_IMAGE_TAG} \
+                       -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
                      """
                 }
             }
@@ -71,9 +70,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                    export BUILD_NUMBER=${BUILD_NUMBER}
+                    export BUILD_NUMBER=${BUILD_NUMBER:-latest}
                     docker-compose down || true
-                    docker rm -f discovery || true
+                    docker rm -f discovery-service || true
                     docker-compose up -d
                 '''
             }

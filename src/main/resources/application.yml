@@ -1,19 +1,19 @@
 server:
-  port: ${PORT}
+  port: ${PORT:8190} # Default to 8190 if PORT is not set
 
 spring:
   application:
-    name: ${SPRING_APP_NAME}
+    name: ${SPRING_APP_NAME:discovery-service} # Default name if not set
   config:
-    import: optional:configserver:http://localhost:8190
+    import: optional:configserver:http://localhost:8190 # Optional Config Server
 
 eureka:
   instance:
     hostname: localhost
   client:
-    register-with-eureka: false
-    fetch-repository: false
-    service-uri:
+    register-with-eureka: false    # Don't register itself
+    fetch-registry: false          # Don't fetch registry
+    service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 logging:
@@ -22,5 +22,3 @@ logging:
       netflix:
         eureka: OFF
         discovery: OFF
-
-

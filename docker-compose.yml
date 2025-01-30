@@ -3,16 +3,14 @@ version: '3.8'
 services:
   discovery-service:
     image: ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER:-latest}
-    container_name: ${CONTAINER_NAME}
+    container_name: ${CONTAINER_NAME:-discovery-service}
     ports:
-      - "${PORT}:${PORT}"
+      - "${PORT:-8190}:${PORT:-8190}" # Default to 8190 if PORT is not set
+    env_file:
+      - ./.env
     networks:
       - demo-network
-#    depends_on:
-#      config-server:
-#        condition: service_healthy
-#    environment:
-#      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+    restart: unless-stopped
 
 networks:
   demo-network:
