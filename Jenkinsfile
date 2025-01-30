@@ -9,7 +9,7 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
         DOCKER_IMAGE_NAME = 'vishnuprv/discovery'
-        DOCKER_IMAGE_TAG = "${BUILD_NUMBER:-latest}" // Default to "latest" if BUILD_NUMBER is not set
+        DOCKER_IMAGE_TAG = "${BUILD_NUMBER ?: 'latest'}" // Use BUILD_NUMBER if set, otherwise default to "latest"
     }
 
     stages {
